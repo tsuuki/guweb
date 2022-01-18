@@ -4,7 +4,7 @@
 app_name = 'tsuki!'
 
 # secret key
-secret_key = 'changeme'
+secret_key = 'dekubush44'
 
 #hCaptcha settings:
 hCaptcha_sitekey = 'changeme'
@@ -18,7 +18,7 @@ mysql = {
     'db': 'gulag',
     'host': 'localhost',
     'user': 'tsuki',
-    'password': 'changeme',
+    'password': 'dekubush44',
 }
 
 # path to gulag root (must have leading and following slash)
