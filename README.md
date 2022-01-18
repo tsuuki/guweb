@@ -9,7 +9,7 @@ requirements
 
 setup
 ------
-
+do not run any of this as root. create a new user `adduser [username]` and give them sudo `adduser [username] sudo`.
 ```sh
 # installs python >=3.9 and the latest version of pip.
 sudo add-apt-repository ppa:deadsnakes/ppa
