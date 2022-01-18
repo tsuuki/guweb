@@ -3,6 +3,98 @@
   border-top-left-radius: 20px;
 }
 
+div.profile-bg {
+  text-transform: lowercase;
+  font-size: 14px;
+  background-color: #666666
+  
+}
+
+svg.svg-inline--fa.fa-trophy.fa-w-18 {
+  margin-right: 5px;
+}
+
+svg.svg-inline--fa.fa-address-book.fa-w-14 {
+  margin-right: 5px
+  
+}
+
+/* stolen from sakuru */
+.is-badge {
+  display: inline-block;
+  justify-content: center;
+  padding-bottom: calc(.4em - 1px);
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  padding-top: calc(.4em - 1px);
+  text-align: center;
+  margin-left: 20px
+  white-space: nowrap;
+  margin-right: 2px;
+  font-weight: 400;
+} 
+
+div.extra-block {
+  text-transform: lowercase;
+  background-color: 282828
+  
+}
+
+a.show-button {
+  background-color: #666666;
+  color: #ffffff;
+  margin-top: 7px;
+}
+
+div.bar-selection.mode-selects {
+  background-color: #434343;
+}
+
+div.bar-selection.badge-selects {
+  background-color: #343434;
+}
+
+div.column.is-one-third {
+  text-transform: lowercase;
+}
+
+div.title {
+  text-transform: lowercase;
+}
+
+div.map-title-block {
+  text-transform: lowercase;
+}
+
+a.beatmap-block {
+  text-transform: lowercase;
+  background-color: #434343;
+}
+
+div.header {
+  background-color: #434343;
+}
+
+div.grade-block {
+  background-color: #666666;
+}
+
+div.stats-block {
+  background-color: #666666;
+}
+
+div.column {
+  background-color: #121212;
+}
+
+div.beatmaps {
+  background-color: #666666;
+}
+
+div.scores {
+  background-color: #666666;
+}
+
 .second-block {
   background: hsl(var(--main), 12%, 15%);
 }
@@ -19,6 +111,34 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+div.profile-bg {
+  background-color: #212121;
+  
+}
+
+div.bar-selection.mode-selects {
+  text-transform: lowercase;
+  background-color: #474448;
+}
+
+div.bar-selection.badge-selects {
+  text-transform: lowercase;
+  background-color: #212121;
+}
+
+div.title {
+  text-transform: lowercase;
+}
+
+div.header {
+  background-color: 474448;
+}
+
+div.stats-block {
+  text-transform: lowercase;
+  background-color: #474448;
 }
 
 .profile-bg {
@@ -103,6 +223,15 @@
 
 .badge-selects {
   background: hsl(var(--main), 16%, 20%);
+}
+
+html.fontawesome-i2svg-active.fontawesome-i2svg-complete.vmykmfyf.idc0_335 {
+  background-color: #292929;
+  
+}
+
+div.column {
+  background-color: #292929;
 }
 
 .select-left {
@@ -264,7 +393,6 @@ html {
 .scores {
   background: content-box;
   transition: 0.2s transform ease;
-  background: hsl(var(--main), 20%, 20%);
   padding: 6px;
 }
 
@@ -278,9 +406,24 @@ html {
   margin: 8px 0;
   justify-content: space-between;
   overflow: hidden;
-  background: hsl(var(--main), 25%, 25%);
   transition: 0.2s ease;
   cursor: pointer;
+}
+
+div.map-pp {
+  color: #ffffff;
+}
+
+a.beatmap-link {
+  color: #cccccc;
+}
+
+div.navbar-brand {
+  background-color: #434343;
+}
+
+nav.navbar.is-primary.minimized {
+  background-color: #434343;
 }
 
 .map-data {

@@ -4,6 +4,72 @@
   width: 1155px;
 }
 
+html body {
+  background-color: #111111
+  
+}
+
+div.right-block-header {
+  background-color: #434343;
+  text-transform: lowercase;
+}
+
+form.setting-block-content {
+  background-color: #666666;
+  text-transform: lowercase;
+}
+
+button.button.is-primary {
+  text-transform: lowercase;
+  background-color: #999999;
+}
+
+div.left-selector {
+  background-color: #666666;
+  text-transform: lowercase;
+}
+
+div.left-header {
+  background-color: #434343;
+  text-transform: lowercase;
+}
+
+div.right-block-content {
+  text-transform: lowercase;
+  background-color: #666666;
+}
+
+div.bottom-block {
+  background-color: #474448;
+}
+
+div.top-block {
+  background-color: #555555;
+}
+
+div.preview-block {
+  background-color: #434343;
+}
+
+form.right-block-content {
+  text-transform: lowercase;
+  background-color: #666666;
+}
+
+div.block-content--left {
+  margin-right: -15px;
+}
+
+input.input {
+  background-color: #434343;
+}
+
+span.username.pink-bold {
+  text-transform: none;
+  color: #cccccc
+  
+}
+
 .collumdis {
   flex-direction: column;
   padding: 21px 22px;

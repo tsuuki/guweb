@@ -60,7 +60,8 @@ new Vue({
         },
         LoadProfileData() {
             this.$set(this.data.stats, 'load', true);
-            this.$axios.get(`${window.location.protocol}//api.${domain}/get_player_info`, {
+	    this.$axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+            this.$axios.get(`https://api.${domain}/get_player_info`, {
                     params: {
                         id: this.userid,
                         scope: 'all'
@@ -73,7 +74,8 @@ new Vue({
         },
         LoadScores(sort) {
             this.$set(this.data.scores[`${sort}`], 'load', true);
-            this.$axios.get(`${window.location.protocol}//api.${domain}/get_player_scores`, {
+	    this.$axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+            this.$axios.get(`https://api.${domain}/get_player_scores`, {
                     params: {
                         id: this.userid,
                         mode: this.StrtoGulagInt(),
@@ -103,9 +105,10 @@ new Vue({
                 });
         },
         LoadUserStatus() {
-            this.$axios.get(`${window.location.protocol}//api.${domain}/get_player_status`, {
+	    this.$axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+            this.$axios.get(`https://api.${domain}/get_player_status`, {
                     params: {
-                        id: this.userid
+                        id: this.userid,
                     }
                 })
                 .then(res => {

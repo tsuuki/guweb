@@ -11,6 +11,33 @@
     border-radius: 8px;
 }
 
+div.column.title-block {
+  background-color: #666666;
+}
+
+div.column.icon-block {
+  background-color: #666666;
+  border-style: none;
+}
+
+div.howto-content {
+  background-color: #343434;
+  
+}
+
+a.button.is-primary {
+  background-color: #666666
+  
+}
+
+div.box.is-padding {
+  background-color: #343434;
+}
+
+div.box.flex.is-mpadding.is-marginless {
+  background-color: #343434;
+}
+
 .title-block {
     height: 125px;
     display: flex;
@@ -107,7 +134,16 @@ button:focus {
 }
 
 .bordertitle {
-    border-left: 6px solid hsl(var(--main), 30%, 50%);
+    border-left: 6px solid hsl(var(--main), 0%, 26%);
+}
+
+div.big-number.flex.flex-lcenter.flex-vcenter {
+  background-color: #434343;
+}
+
+div.howto-number {
+  font-size: 18px;
+  padding-top: 5px;
 }
 
 .bordertitle .title {

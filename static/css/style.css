@@ -14,9 +14,83 @@ body {
   height: -webkit-fill-available;
 }
 
+div li a {
+  color: #666666;
+}
+
+div.navbar-menu {
+  background-color: #434343;
+  border-radius: 0 0 0.0em 0.0em;
+}
+
+a.button.is-primary {
+  background-color: #666666;
+}
+
 html {
   position: relative;
   min-height: 100%;
+  --main: 23;
+  background-color: #111111;
+}
+
+div.container.flex {
+  background-color: #111111;
+  
+}
+
+div.hero.splash.p-less.is-fullheight-with-navbar {
+  background-color: 111111;
+}
+
+a.navbar-item.navbar-logo {
+  background-color: #111111;
+}
+
+section.section {
+  color: #fff;
+  background-color: #242424;
+    text-transform: lowercase;
+}
+
+footer.footer {
+  background-color: #434343;
+  text-transform: lowercase;
+}
+
+a.foot-link {
+  margin-left: 20px;
+  color: #999999;
+}
+
+div.navbar-dropdown {
+  background-color: #434343;
+  
+}
+
+div.noti-banner.noti-banner-warning {
+  background-color: #f9a825;
+  color: #fafafa;
+  text-transform: lowercase;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+h2.subtitle {
+  text-transform: lowercase;
+}
+
+div p a {
+  color: #616161;
+  
+}
+
+div h2 a {
+  color: #666666;
+}
+
+nav.navbar.is-primary.minimized {
+  background-color: #111111;
 }
 
 .footer {
@@ -92,6 +166,11 @@ html {
 
 .is-active .navbar-menu {
   display: block;
+}
+
+div.navbar-menu {
+  background-color: #434343
+  
 }
 
 .my-con {
@@ -180,6 +259,10 @@ a.foot-link {
   font-weight: 500;
 }
 
+div.navbar-brand {
+    background-color: #434343 !important;
+}
+
 .navbar.is-spaced {
   padding: 0rem 2rem;
 }
@@ -193,6 +276,7 @@ a.foot-link {
 
 .minimized.navbar {
   height: 48px;
+  background-color: #111111
   padding: 0px 40px;
 }
 
@@ -253,6 +337,12 @@ a.foot-link {
   color: #fff;
 }
 
+div.navbar-menu {
+  color: #ffffff;
+  background-color: #434343;
+  text-transform: lowercase;
+}
+
 .navbar-logo {
   transition: 0.2s ease;
   font-size: 1.2rem;
@@ -284,11 +374,11 @@ a.foot-link {
 }
 
 .bg-accent {
-  background-color: hsl(var(--main), 30%, 50%);
+  background-color: hsl(var(--main), 0%, 6.7%);
 }
 
 .bg-seccond {
-  background-color: hsl(var(--main),10%,15%);
+  background-color: hsl(var(--main), 0%, 6.7%);
 }
 
 /* auth notification */
@@ -723,14 +813,30 @@ a.foot-link {
 
 body::-webkit-scrollbar {
   width: 12px;
-  background-color: hsl(var(--main), 10%, 25%);
+  background-color: hsl(var(--main), 0%, 50%);
   border-bottom-right-radius: 8px;
 }
 body::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: hsl(var(--main), 15%, 40%);
+  background-color: hsl(var(--main), 0%, 0%);
 }
 
 [v-cloak] {
   display: none;
+}
+
+.button.is-primary {
+    background-color: #696969;
+}
+
+h1.title.is-spaced {
+  text-transform: lowercase;
+}
+
+div.hero-body {
+  background-color: #333333;
+}
+
+.button.hover {
+    background-color: #696969;
 }

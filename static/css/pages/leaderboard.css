@@ -10,13 +10,62 @@ a:hover {
 }
 
 .main-block {
-  background-color: hsl(var(--main), 10%, 15%);
   margin-top: 0;
   width: auto;
 }
 
+a.mode-select.active {
+  font-size: 18px;
+}
+
+div.banner-text {
+  text-transform: lowercase;
+}
+
+div.leaderboard-banner.main-banner {
+  background-color: #616161;
+}
+
+a.simple-banner-switch.active {
+  text-transform: lowercase;
+  font-size: 18px;
+}
+
+a.simple-banner-switch {
+  text-transform: lowercase;
+}
+
+td.column-player-rank {
+  font-weight: 700;
+  font-style: normal;
+  background-color: #757575;
+}
+
+td.column-player-name.text-left {
+  background-color: #434343;
+}
+
+div.leaderboard-main-bg.table-responsive {
+  background-color: #434343;
+}
+
+th.t-heading.table--selected {
+  text-transform: lowercase;
+}
+
+th.t-heading {
+  text-transform: lowercase;
+}
+
+tbody tr td {
+  background-color: #434343;
+}
+
+div.flag-dropdown {
+  text-transform: lowercase;
+}
+
 .leaderboard-banner {
-  background-color: hsl(var(--main), 30%, 50%);
   height: 194px;
   border-radius: 0;
   border-top-right-radius: 8px;
@@ -28,7 +77,6 @@ a:hover {
   color: #222;
   height: 38px;
   font-size: 12px;
-  background-color: hsl(var(--main), 15%, 25%);
 }
 
 .leaderboard-main-bg {
@@ -54,7 +102,6 @@ tr td {
 .column-player-rank {
   padding: 0 10px;
   text-align: center;
-  background-color: hsl(var(--main), 15%, 27%) !important;
   min-width: 44px;
   font-weight: 600;
   font-size: 13px;
@@ -97,7 +144,6 @@ tr td {
 
 tr.leaderboard-column td {
   font-weight: 600;
-  border-bottom: hsl(var(--main), 20%, 30%);
   transition: 0.1s background-color;
   color: #fff !important;
   text-align: center;
@@ -109,7 +155,6 @@ table th {
 }
 
 .leaderboard-column:hover td:not(:first-child) {
-  background-color: hsl(var(--main), 20%, 30%);
 }
 
 .main-banner {
@@ -266,7 +311,7 @@ table th {
   font-size: 12px;
 }
 .flag-dropdown, .noUi-tooltip {
-  background-color: hsl(var(--main), 15%, 5%) !important;
+  background-color: hsl(var(--main), 0%, 15%) !important;
   filter: opacity(0.95);
   border-radius: 4px;
   padding: 5px;
