@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Leaderboard {% endblock %}
+{% block title %} leaderboard {% endblock %}
 
 {% block header %}
 <script src="/static/js/asserts/vue.js"></script>
@@ -49,8 +49,6 @@
                 @click="LoadLeaderboard(sort, mode, 'vn')">Vanilla</a>
                 <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'rx', 'disabled': mode === 'mania' }"
                 @click="LoadLeaderboard(sort, mode, 'rx')">Relax</a>
-                <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'ap', 'disabled': mode === 'taiko' || mode === 'catch' || mode === 'mania'  }"
-                @click="LoadLeaderboard(sort, mode, 'ap')">Autopilot</a>
             </div>
         </div>
     </div>
@@ -106,7 +104,7 @@
             </div>
             <div v-else>
                 <div class="text-center">
-                    there are no players to display!
+                    there are no players to display! check for errors in the console if you think this is a mistake!
                 </div>
             </div>
         </div>

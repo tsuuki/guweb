@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Profile {% endblock %}
+{% block title %} profile {% endblock %}
 
 {% macro scores(title, id) %}
 <div class="log-block" v-bind:class="{ 'load' : data.scores.{{ id }}.load }">
@@ -10,7 +10,7 @@
     </div>
     <div v-if="data.scores.{{ id }}.out.length != 0" class="scores">
         <div v-for="(map, index) in data.scores.{{ id }}.out" class="map-single"
-            :style="`background: linear-gradient(hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 90%)), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg)`">
+            :style="`background: linear-gradient(hsl(var(--main), 0%, 26%, 90%), (hsl(var(--main), 0%, 26%, 90%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg)`">
             <div class="map-data">
                 <div class="map-content1">
                     <div class="map-image">
@@ -60,16 +60,16 @@
     <div v-else-if="data.scores.{{ id }}.out.length == 0" class="stats-block">
         <div class="columns is-marginless">
             <div class="column is-1">
-                <h1 class="title">: (</h1>
+                <h1 class="title">:(</h1>
             </div>
             <div class="column">
-                <h1 class="title is-6">No scores available</h1>
-                <p class="subtitle is-7">Try playing something?</p>
+                <h1 class="title is-6">no scores available</h1>
+                <p class="subtitle is-7">try playing something?</p>
             </div>
         </div>
     </div>
     <div v-if="data.scores.{{ id }}.more.full == false" class="extra-block">
-        <a class="show-button" @click="AddLimit('{{ id }}score')">Show more</a>
+        <a class="show-button" @click="AddLimit('{{ id }}score')">show more</a>
     </div>
 </div>
 {% endmacro %}
@@ -111,8 +111,8 @@
                 <h1 class="title">: (</h1>
             </div>
             <div class="column">
-                <h1 class="title is-6">No beatmaps available</h1>
-                <p class="subtitle is-7">Try playing something?</p>
+                <h1 class="title is-6">no beatmaps available</h1>
+                <p class="subtitle is-7">try playing something?</p>
             </div>
         </div>
     </div>
@@ -149,10 +149,10 @@
                 </h1>
                 <transition name="fade">
                     <div class="subtitle" v-if='data.status.online == false'>
-                        <a class='circle'>●</a> Offline
+                        <a class='circle'>●</a> offline
                     </div>
                     <div class="subtitle" v-else-if='data.status.online == true'>
-                        <a class='circle green'>●</a> Online
+                        <a class='circle green'>●</a> online
                     </div>
                 </transition>
             </div>
@@ -190,20 +190,17 @@
                 </div>
                 <div class="select-right">
                     <a class="simple-banner-switch" v-bind:class=" { 'selected': mods === 'vn' }"
-                        @click="ChangeModeMods(mode,'vn')"><span class="mods-fulltext">Vanilla</span>
-                        <span class="mods-shorttext">VN</span></a>
+                        @click="ChangeModeMods(mode,'vn')"><span class="mods-fulltext">vanilla</span>
+                        <span class="mods-shorttext">vn</span></a>
                     <a class="simple-banner-switch" v-bind:class=" { 'selected': mods === 'rx', 'disabled': mode === 'mania' }"
-                        @click="ChangeModeMods(mode,'rx')"><span class="mods-fulltext">Relax</span>
-                        <span class="mods-shorttext">RX</span></a>
-                    <a class="simple-banner-switch" v-bind:class=" { 'selected': mods === 'ap', 'disabled': mode === 'taiko' || mode === 'catch' || mode === 'mania'  }"
-                        @click="ChangeModeMods(mode,'ap')"><span class="mods-fulltext">Autopilot</span><span
-                            class="mods-shorttext">AP</span></a>
+                        @click="ChangeModeMods(mode,'rx')"><span class="mods-fulltext">relax</span>
+                        <span class="mods-shorttext">rx</span></a>
                 </div>
             </div>
             <div class="bar-selection badge-selects">
-                <span>
-                    Badges not yet implemented!
-                </span>
+                {% for el in group_list %}
+                    <span class="is-badge" style="color: {{ el[2] }};"><i class="fas fa-{{ el[0] }}"></i>  {{ el[1] }}</span>
+                {% endfor %}
             </div>
         </div>
     </div>

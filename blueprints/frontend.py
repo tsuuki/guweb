@@ -6,9 +6,12 @@ import bcrypt
 import hashlib
 import os
 import time
+import datetime
+from pandas import to_datetime
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
+from cmyui.osu import Mods
 from functools import wraps
 from PIL import Image
 from pathlib import Path
@@ -23,7 +26,7 @@ from constants import regexes
 from objects import glob
 from objects import utils
 from objects.privileges import Privileges
-from objects.utils import flash
+from objects.utils import flash, time_ago
 from objects.utils import flash_with_customizations
 
 VALID_MODES = frozenset({'std', 'taiko', 'catch', 'mania'})
@@ -35,14 +38,75 @@ def login_required(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
         if not session:
-            return await flash('error', 'You must be logged in to access that page.', 'login')
+            return await flash('error', 'you must be logged in to access that page.', 'login')
         return await func(*args, **kwargs)
     return wrapper
 
 @frontend.route('/home')
 @frontend.route('/')
 async def home():
-    return await render_template('home.html')
+    record = {}
+    record['std-vn'] = await glob.db.fetch("SELECT scores_vn.id, scores_vn.pp, scores_vn.userid, "
+                                           "maps.set_id, users.name FROM scores_vn LEFT JOIN users ON "
+                                           "scores_vn.userid = users.id LEFT JOIN maps ON scores_vn.map_md5 "
+                                           "= maps.md5 WHERE scores_vn.mode = 0 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['std-rx'] = await glob.db.fetch("SELECT scores_rx.id, scores_rx.pp, scores_rx.userid, "
+                                           "maps.set_id, users.name FROM scores_rx LEFT JOIN users ON "
+                                           "scores_rx.userid = users.id LEFT JOIN maps ON scores_rx.map_md5 "
+                                           "= maps.md5 WHERE scores_rx.mode = 0 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['taiko-vn'] = await glob.db.fetch("SELECT scores_vn.id, scores_vn.pp, scores_vn.userid, "
+                                           "maps.set_id, users.name FROM scores_vn LEFT JOIN users ON "
+                                           "scores_vn.userid = users.id LEFT JOIN maps ON scores_vn.map_md5 "
+                                           "= maps.md5 WHERE scores_vn.mode = 1 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['taiko-rx'] = await glob.db.fetch("SELECT scores_rx.id, scores_rx.pp, scores_rx.userid, "
+                                           "maps.set_id, users.name FROM scores_rx LEFT JOIN users ON "
+                                           "scores_rx.userid = users.id LEFT JOIN maps ON scores_rx.map_md5 "
+                                           "= maps.md5 WHERE scores_rx.mode = 1 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['catch-vn'] = await glob.db.fetch("SELECT scores_vn.id, scores_vn.pp, scores_vn.userid, "
+                                           "maps.set_id, users.name FROM scores_vn LEFT JOIN users ON "
+                                           "scores_vn.userid = users.id LEFT JOIN maps ON scores_vn.map_md5 "
+                                           "= maps.md5 WHERE scores_vn.mode = 2 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['catch-rx'] = await glob.db.fetch("SELECT scores_rx.id, scores_rx.pp, scores_rx.userid, "
+                                           "maps.set_id, users.name FROM scores_rx LEFT JOIN users ON "
+                                           "scores_rx.userid = users.id LEFT JOIN maps ON scores_rx.map_md5 "
+                                           "= maps.md5 WHERE scores_rx.mode = 2 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['mania-vn'] = await glob.db.fetch("SELECT scores_vn.id, scores_vn.pp, scores_vn.userid, "
+                                           "maps.set_id, users.name FROM scores_vn LEFT JOIN users ON "
+                                           "scores_vn.userid = users.id LEFT JOIN maps ON scores_vn.map_md5 "
+                                           "= maps.md5 WHERE scores_vn.mode = 3 && maps.status=2 "
+                                           "&& users.priv & 1 ORDER BY pp DESC LIMIT 1;")
+
+    record['std-vn']['pp'] = round(float(record['std-vn']['pp']), 2)
+    record['std-rx']['pp'] = round(float(record['std-rx']['pp']), 2)
+    record['taiko-vn']['pp'] = round(float(record['taiko-vn']['pp']), 2)
+    record['taiko-rx']['pp'] = round(float(record['taiko-rx']['pp']), 2)
+    record['catch-vn']['pp'] = round(float(record['catch-vn']['pp']), 2)
+    record['catch-rx']['pp'] = round(float(record['catch-rx']['pp']), 2)
+    record['mania-vn']['pp'] = round(float(record['mania-vn']['pp']), 2)
+
+    latest_users = await glob.db.fetchall(
+        'SELECT id, name, country, priv, creation_time AS `time_ago` '
+        'FROM users ORDER BY creation_time DESC LIMIT 10'
+        )
+    now = datetime.datetime.utcnow()
+    for el in latest_users:
+        time2 = datetime.datetime.fromtimestamp(int(el['time_ago']))
+        el['time_ago'] = time_ago(now, time2, 1) + "ago"
+        el['country'] = el['country'].upper()
+
+    return await render_template('home.html', record=record, latest_users=latest_users)
 
 @frontend.route('/home/account/edit')
 async def home_account_edit():
@@ -321,13 +385,41 @@ async def profile_select(id):
     if mods is not None and mods not in VALID_MODS:
         return (await render_template('404.html'), 404)
 
-    is_staff = 'authenticated' in session and session['user_data']['is_staff']
+    is_staff = 'authenticated' in session and (Privileges.Admin in Privileges(int(session['user_data']['priv'])))
     if not user_data or not (user_data['priv'] & Privileges.Normal or is_staff):
         return (await render_template('404.html'), 404)
 
-    user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
-    return await render_template('profile.html', user=user_data, mode=mode, mods=mods)
+    group_list = []
+    user_priv = Privileges(int(user_data['priv']))
+    if Privileges.Normal not in user_priv:
+        group_list.append(["ban", "Restricted", "#000000"])
+    else:
+        if int(user_data['id']) in [3]:
+            group_list.append(["crown" ,"Owner", "#e84118"])
+        if int(user_data['id']) in [17]:
+            group_list.append(["basketball-ball" ,"certified baller", "#fdb927"])
+        if Privileges.Dangerous in user_priv:
+            group_list.append(["code" ,"Developer", "#9b59b6"])
+        if Privileges.Admin in user_priv:
+            group_list.append(["star", "Admin", "#f39c12"])
+        if Privileges.Mod in user_priv:
+            group_list.append(["shield-alt", "GMT", "#28a40c"])
+        if Privileges.Nominator in user_priv:
+            group_list.append(["music", "BAT", "#1e90ff"])
+        if Privileges.Alumni in user_priv:
+            group_list.append(["cloud-moon", "tsuki! beta tester", "#ffffff"])
+        if Privileges.Supporter in user_priv:
+            if Privileges.Premium in user_priv:
+                group_list.append(["gem", "Supporter+", "#f78fb3"])
+            else:
+                group_list.append(["heart", "Supporter", "#f78fb3"])
+        elif Privileges.Premium in user_priv:
+            group_list.append(["gem", "Supporter+", "#f78fb3"])
+        if Privileges.Whitelisted in user_priv:
+            group_list.append(["check", "Verified", "#28a40c"])
 
+    user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
+    return await render_template('profile.html', user=user_data, mode=mode, mods=mods, group_list=group_list)
 
 @frontend.route('/leaderboard')
 @frontend.route('/lb')
@@ -335,6 +427,10 @@ async def profile_select(id):
 @frontend.route('/lb/<mode>/<sort>/<mods>')
 async def leaderboard(mode='std', sort='pp', mods='vn'):
     return await render_template('leaderboard.html', mode=mode, sort=sort, mods=mods)
+
+@frontend.route('/rules')
+async def rules():
+	return await render_template('rules.html')
 
 @frontend.route('/login')
 async def login():
@@ -557,7 +653,7 @@ async def register_post():
 @frontend.route('/logout')
 async def logout():
     if 'authenticated' not in session:
-        return await flash('error', "You can't logout if you aren't logged in!", 'login')
+        return await flash('error', "you can't logout if you aren't logged in!", 'login')
 
     if glob.config.debug:
         log(f'{session["user_data"]["name"]} logged out.', Ansi.LGREEN)
@@ -567,7 +663,7 @@ async def logout():
     session.pop('user_data', None)
 
     # render login
-    return await flash('success', 'Successfully logged out!', 'login')
+    return await flash('success', 'successfully logged out!', 'login')
 
 # social media redirections
 
@@ -615,5 +711,34 @@ async def get_profile_background(user_id: int):
         path = BACKGROUND_PATH / f'{user_id}.{ext}'
         if path.exists():
             return await send_file(path)
+
+    #Make badges
+    user_priv = Privileges(user['priv'])
+    group_list = []
+    if Privileges.Normal not in user_priv:
+        group_list.append(["RESTRICTED", "#FFFFFF"])
+    else:
+        if int(user['id']) in [3,4]:
+            group_list.append(["OWNER", "#e84118"])
+        if Privileges.Dangerous in user_priv:
+            group_list.append(["DEV", "#9b59b6"])
+        elif Privileges.Admin in user_priv:
+            group_list.append(["ADM", "#fbc531"])
+        elif Privileges.Mod in user_priv:
+            group_list.append(["GMT", "#28a40c"])
+        if Privileges.Nominator in user_priv:
+            group_list.append(["BN", "#1e90ff"])
+        if Privileges.Alumni in user_priv:
+            group_list.append(["ALU", "#ea8685"])
+        if Privileges.Supporter in user_priv:
+            if Privileges.Premium in user_priv:
+                group_list.append(["??", "#f78fb3"])
+            else:
+                group_list.append(["?", "#f78fb3"])
+        elif Privileges.Premium in user_priv:
+            group_list.append(["??", "#f78fb3"])
+        if Privileges.Whitelisted in user_priv:
+            group_list.append(["?", "#28a40c"])
+
 
     return b'{"status":404}'

@@ -1,12 +1,38 @@
 {% extends 'base.html' %}
-{% block title %} Home {% endblock %}
+{% block title %} home {% endblock %}
 
 {% block header %}
 <link rel="stylesheet" href="/static/css/pages/home.css">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% endblock %}
 
+{% macro l_usr_card(id, name, country, time_ago) %}
+<div class="latest-user-element">
+  <div class="avatar" style="background-image: url(https://a.tski.moe/{{id}});"></div>
+  <div class="name">
+    <div class="latest-users-element-text">
+      <a href="https://tski.moe/u/{{ id }}" class="profile-link">
+        <span class="latest-users-element-text"><img src="static/images/flags/{{ country }}.png" class="flag">{{name}}</span>
+      </a>
+    </div>
+  </div>
+  <div class="timeago">
+    <div class="latest-users-element-text-r">
+      <span class="latest-users-element-text-r">{{ time_ago }}</span>
+    </div>
+  </div>
+</div>
+{% endmacro %}
 {% block content %}
-
+<script>
+  axios.get('https://api.tski.moe/get_player_count')
+  .then((response) => {
+    var online = response.data.counts.online;
+    var registered = response.data.counts.total;
+    document.getElementById('online').innerHTML = online;
+    document.getElementById('registered').innerHTML = registered;
+  });
+</script>
 {% if flash %}
 <div class='noti-banner noti-banner-warning'>
   <div class="container">
@@ -22,9 +48,9 @@
         </div>
         <div class='noti-bannertext'>
           {% if status=='error' %}
-          Uh oh! Be careful!
+          i don't know what you're doing...
           {% elif status=='success' %}
-          Hey! Listen!
+          look here!
           {% endif %}
         </div>
       </div>
@@ -42,16 +68,16 @@
       <div class="column flex-vcenter flex-lcenter is-size-2-desktop is-size-1-fullhd" id="title">
         <h1 class="title is-spaced is-size-2-desktop is-size-1-fullhd">{{ appName() }}</h1>
         <h2 class="subtitle">
-          We are an osu! private server built from the ground up with many
-          unique features not seen elsewhere - for more information, check
-          out <a href="http://github.com/cmyui/gulag">gulag</a>
-          and <a href="https://github.com/Varkaria/guweb">guweb</a>
-          on GitHub - we're fully open source!
+          we are an <strong>osu!</strong> cheating server with a emphasis on
+          "legit" hacking.<br>we want to push the limits of what is considered "possible".<br>
+          gone are the days of aimlessly cheating to get 10,000pp on a stream map.
+          some real skill is required here, and we're strict enough to scare most
+          away. do you have what it takes to get to #1?
         </h2>
         {% if not session.authenticated %}
         <div class="buttons">
           <a class="button is-primary" href="/register">
-            <strong>Sign up</strong>
+            <strong>sign up</strong>
           </a>
           <a class="button is-light" href="/login">
             Log in
@@ -68,7 +94,7 @@
 
 <section class="section">
   <div class="container has-text-centered py-4">
-    <h2 class="title mb-6">Some of our coolest features</h2>
+    <h2 class="title mb-6">for now, we have the basics:</h2><br>
     <div class="columns has-text-left mb-6">
       <div class="column is-4">
         <div class="columns">
@@ -76,10 +102,9 @@
             <i class="image is-32x32 fas fa-address-card"></i>
           </div>
           <div class="column is-10">
-            <h4 class="title is-spaced is-4">PP for Relax and Autopilot</h4>
-            <p class="subtitle is-6">Our server has unique pp formula for relax and autopilot.
-              Good at waving your cursor or just smashing your keyboard? Join {{ appName() }} and get a fair reward for
-              your skills!
+            <h4 class="title is-spaced is-4">relax pp</h4>
+            <p class="subtitle is-6">fine tuned by <a href="https://tski.moe/u/3">yours truly</a>.<br>
+              go insane slinging your mouse (or tablet) around the screen.<br>see how far you get on the leaderboards.
             </p>
           </div>
         </div>
@@ -90,29 +115,132 @@
             <i class="image is-32x32 fas fa-ambulance"></i>
           </div>
           <div class="column is-10">
-            <h4 class="title is-spaced is-4">Free osu!direct</h4>
-            <p class="subtitle is-6">You won't have to pay for osu!supporter to have a convenient gameplay experience in
-              the
-              client - osu!direct is available for everyone! Keep in mind supporting us still grants a huge set of cool
-              perks but
-              absense of it doesn't affect your game sessions!</p>
+            <h4 class="title is-spaced is-4">active staff and community</h4>
+            <p class="subtitle is-6">we love you. <br>do you love us?</p>
           </div>
         </div>
       </div>
       <div class="column is-4">
         <div class="columns">
           <div class="column is-2">
-            <i class="image is-32x32 fas fa-archive"></i>
+            <i class="image is-32x32 fas fa-heart"></i>
           </div>
           <div class="column is-10">
-            <h4 class="title is-spaced is-4">Flexible library</h4>
-            <p class="subtitle is-6">We're written on top of cmyui's multipurpose library allowing for a fully
-              asynchronous environment, both improving performance and the user's experience in the long term!</p>
+            <h4 class="title is-spaced is-4">speedy and sexy..</h4>
+            <p class="subtitle is-6">.. at the same time.<br>thanks to cmyui's and varkaria's hard work on both gulag and guweb respectively,
+              our login speeds have never been quicker, and this platform allows us to build new features quickly.</p>
           </div>
         </div>
       </div>
     </div>
+{% if record is defined %}
+<section class="section">
+  <div class="container has-text-centered py-4">
+    <h2 class="title mb-6">pp records and recent users</h2>
   </div>
+  <div class="server-stats">
+    <div class="pp-std-vn">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['std-vn']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-osu"></i> <a href="https://tski.moe/score/{{ record['std-vn']['id'] }}/vn" class="stat-mode-scorelink">osu! vanilla record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['std-vn']['userid'] }}" class="stat-avatar-img"><span> {{ record['std-vn']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['std-vn']['userid'] }}" style="font-weight: 500 !important;">{{ record['std-vn']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-std-rx">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['std-rx']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-osu"></i> <a href="https://tski.moe/score/{{ record['std-rx']['id'] }}/rx" class="stat-mode-scorelink">osu! relax record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['std-rx']['userid'] }}" class="stat-avatar-img"><span> {{ record['std-rx']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['std-rx']['userid'] }}" style="font-weight: 500 !important;">{{ record['std-rx']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-taiko-rx">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['taiko-rx']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-taiko"></i> <a href="https://tski.moe/score/{{ record['std-rx']['id'] }}/rx" class="stat-mode-scorelink">osu!taiko vanilla record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['taiko-rx']['userid'] }}" class="stat-avatar-img"><span> {{ record['taiko-rx']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['taiko-rx']['userid'] }}" style="font-weight: 500 !important;">{{ record['taiko-rx']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-taiko-vn">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['taiko-vn']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-taiko"></i> <a href="https://tski.moe/score/{{ record['taiko-vn']['id'] }}/vn" class="stat-mode-scorelink">osu!taiko relax record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['taiko-vn']['userid'] }}" class="stat-avatar-img"><span> {{ record['taiko-vn']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['taiko-vn']['userid'] }}" style="font-weight: 500 !important;">{{ record['taiko-vn']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-catch-vn">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['catch-vn']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-catch"></i> <a href="https://tski.moe/score/{{ record['catch-vn']['id'] }}/vn" class="stat-mode-scorelink">osu!catch vanilla record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['catch-vn']['userid'] }}" class="stat-avatar-img"><span> {{ record['catch-vn']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['catch-vn']['userid'] }}" style="font-weight: 500 !important;">{{ record['catch-vn']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-catch-rx">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['catch-rx']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-catch"></i> <a href="https://tski.moe/score/{{ record['catch-rx']['id'] }}/rx" class="stat-mode-scorelink">osu!catch relax record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['catch-rx']['userid'] }}" class="stat-avatar-img"><span> {{ record['catch-rx']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['catch-rx']['userid'] }}" style="font-weight: 500 !important;">{{ record['catch-rx']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="pp-mania-vn">
+      <div class="stat-block" style="background: linear-gradient(hsl(var(--main), 15%, 15%, 0.8), hsl(var(--main), 15%, 15%, 0.8)), url(https://assets.ppy.sh/beatmaps/{{ record['mania-vn']['set_id'] }}/covers/card.jpg); background-size: cover; background-position-x: 50%;">
+        <div class="stat-mode-name">
+          <i class="mode-icon mode-mania"></i> <a href="https://tski.moe/score/{{ record['mania-vn']['id'] }}/vn" class="stat-mode-scorelink">osu!mania record</a>
+        </div>
+        <div class="stat-avatar-pp">
+          <img src="https://a.tski.moe/{{ record['mania-vn']['userid'] }}" class="stat-avatar-img"><span> {{ record['mania-vn']['pp'] }}<strong>pp</strong></span>
+        </div>
+        <div class="stat-user">
+          <span>Played by <a href="https://tski.moe/u/{{ record['mania-vn']['userid'] }}" style="font-weight: 500 !important;">{{ record['mania-vn']['name'] }}</a></span>
+        </div>
+      </div>
+    </div>
+    <!-- Latest Users -->
+    <div class="latest-users">
+      <div class="latest-users-header">
+        <span><i class="fas fa-users" style="margin-right: 5px;"></i>Recent Users</span>
+      </div>
+      {% for el in latest_users %}
+        {{ l_usr_card(el['id'], el['name'], el['country'], el['time_ago'])}}
+      {% endfor %}
+    </div>
+</section>
+{% endif %}
 </section>
 
 {% if not session.authenticated %}
@@ -120,14 +248,12 @@
   <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="title is-spaced">What are you waiting for?</h1>
-      <h2 class="subtitle">Join {{ appName() }}! It's risk-free! You won't get your account banned on official servers
-        if
-        you play here with us! And don't worry, as you can always switch between the official servers and us at any time!</h2>
-      <div class="buttons is-centered"><a class="control button is-primary" href="/register">Sign up for free</a><a
-          class="control button is-light" href="/login">Login</a></div>
+      <h2 class="subtitle">join {{ appName() }} scratch that itch for perfection by cheating like
+	you're on bancho. pretend you're cookiezi, and go insane.</h2>
+      <div class="buttons is-centered"><a class="control button is-primary" href="/register">sign up for free</a><a
+          class="control button is-light" href="/login">login</a></div>
     </div>
   </div>
 </section>
 {% endif %}
-
 {% endblock %}
