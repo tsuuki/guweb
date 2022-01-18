@@ -11,7 +11,7 @@ setup
 ------
 
 ```sh
-# installs Python >=3.9 and latest version of PIP.
+# installs python >=3.9 and the latest version of pip.
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt install python3.9 python3.9-dev python3.9-distutils && wget https://bootstrap.pypa.io/get-pip.py
 python3.9 get-pip.py && rm get-pip.py
@@ -26,7 +26,7 @@ python3.9 -m pip install -r ext/requirements.txt
 # obviously, change tski.moe to your domain.
 sudo ln -r -s ext/nginx.conf /etc/nginx/sites-enabled/guweb.conf && sudo nano ext/nginx.conf
 
-# reloads guweb's nginx configuration.
+# reloads guweb's nginx configuration. do this every time you make a change to it.
 sudo nginx -s reload
 
 # configure guweb to your liking.
