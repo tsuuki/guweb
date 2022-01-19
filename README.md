@@ -17,7 +17,7 @@ sudo apt install python3.9 python3.9-dev python3.9-distutils && wget https://boo
 python3.9 get-pip.py && rm get-pip.py
 
 # installs mysql and nginx, clones this repository, goes into the guweb directory and initalises oppai.
-sudo apt install mysql-server nginx && git clone https://github.com/varkaria/guweb.git && cd guweb && git submodule init && git submodule update
+sudo apt install mysql-server nginx && git clone https://github.com/tsuuki/guweb.git && cd guweb && git submodule init && git submodule update
 
 # install requirements from pip.
 python3.9 -m pip install -r ext/requirements.txt
